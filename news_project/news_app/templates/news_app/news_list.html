@@ -1,0 +1,14 @@
+{% extends 'news_app/default.html' %}
+
+{% load custom_filters %}
+
+{% block content %}
+  <h1>Новости</h1>
+    {% for article in articles %}
+        <h4>{{ article.title|censor }}</h4>
+        <p>Опубликовано {{ article.date_published|date:"F j, Y, H:i" }}</p>
+        <a href="/news/{{ article.id }}">{{ article.content|truncatechars:50|censor }}</a>
+    {% empty %}
+      <p>Нет новых статей.</p>
+    {% endfor %}
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends 'news_app/default.html' %}
+
+{% load custom_filters %}
+
+{% block content %}
+  <h1>Проверка</h1>
+        <h4>{{ article.title|censor }}</h4>
+        <p>{{ article.content|censor }}</p>
+        <p><i>Опубликовано: {{ article.date_published|date:"F j, Y, H:i" }}</i></p>
+{% endblock %}
