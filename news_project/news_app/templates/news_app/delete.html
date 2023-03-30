@@ -1,0 +1,12 @@
+{% extends 'news_app/default.html' %}
+{% block title %}Удаление новости{% endblock %}
+{% block content %}
+  <h1>Удаление новости</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.title }}<br>
+    {{ form.content }}<br>
+    <button class="btn btn-success" type="submit">Удалить новость</button>
+    <span>{{ error }}</span>
+  </form>
+{% endblock %}

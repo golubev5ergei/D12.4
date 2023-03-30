@@ -2,9 +2,13 @@
 
 {% load custom_filters %}
 
+{% block title %}{{ article.title|censor }}{% endblock %}
+
 {% block content %}
   <h1>Проверка</h1>
         <h4>{{ article.title|censor }}</h4>
         <p>{{ article.content|censor }}</p>
-        <p><i>Опубликовано: {{ article.date_published|date:"F j, Y, H:i" }}</i></p>
+        <p><i>Опубликовано: {{ article.date_published|date:"F j, Y, H:i" }}</i></p><br>
+        <a href="{% url 'article-delete' article.id %}" class="btn btn-warning">Удалить</a>
+        <a href="{% url 'article-update' article.id %}" class="btn btn-info">Редактировать</a>
 {% endblock %}
