@@ -1,0 +1,13 @@
+{% extends "news_app/default.html" %}
+
+{% block content %}
+<h2>Страница авторизованного пользователя {{request.user.username}}</h2>
+<div>
+    <h3>{{request.user.username}}, Вы - зарегистрированы. Вы можете добавлять и редактировать статьи на сайте.</h3>
+</div>
+
+<button class="btn btn-warning"><a href="sign/logout/">Выйти</a></button><br>
+{% if is_not_authors %}
+<button class="btn btn-info"><a href="sign/upgrade/">Стать автором!</a></button>
+{% endif %}
+{% endblock %}

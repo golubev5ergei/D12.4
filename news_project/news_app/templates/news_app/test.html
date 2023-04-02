@@ -1,5 +1,47 @@
 {% extends 'news_app/default.html' %}
 
+{% load custom_filters %}
+
 {% block content %}
-{{ news }}
+  <h1>Новости</h1>
+  <form method="GET">
+    {{ filter.form }}
+    <input type="submit" value="Найти">
+</form>
+    {% for article in articles %}
+        <h4>{{ article.title|censor }}</h4>
+        <p>Опубликовано {{ article.date_published|date:"F j, Y, H:i" }}</p>
+        <a href="/news/{{ article.id }}">{{ article.content|truncatechars:50|censor }}</a>
+    {% empty %}
+      <p>Нет новых статей.</p>
+    {% endfor %}
+    {% if is_paginated %}
+    {% if is_paginated %}
+  <nav aria-label="Page navigation example">
+    <ul class="pagination">
+      {% if page_obj.has_previous %}
+        <li class="page-item"><a class="page-link" href="?page=1">First</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">«</a></li>
+      {% endif %}
+      {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+          <li class="page-item active"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+          <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+        {% endif %}
+      {% endfor %}
+      {% if page_obj.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">»</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last</a></li>
+      {% endif %}
+    </ul>
+  </nav>
+{% endif %}
+
+ 
+{% endif %}
+
 {% endblock content %}
+{% block button %}
+    <a href="{% url 'create' %}"><button class="btn btn-info">Добавить новость</button></a>
+{% endblock button %}
