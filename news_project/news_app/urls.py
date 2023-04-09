@@ -12,4 +12,6 @@ urlpatterns = [
     path('create', views.ArticleCreate.as_view(), name='create'),
     path('protect/', include('protect.urls')),
     path('sign/', include('sign.urls')),
+    path('news/<str:category>/', views.ArticleList.as_view(), name='news_category'),
+    path('subscribe/', include('send_mail.urls')),
 ]

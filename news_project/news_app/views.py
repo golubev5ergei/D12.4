@@ -1,28 +1,37 @@
 from django.shortcuts import render, redirect
-from .models import Article
+from .models import Article, Category
 from .forms import ArticleForm
 from django.views.generic import DetailView, UpdateView, DeleteView, ListView, CreateView
 from .filters import ArticleFilter
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.mail import send_mail
 
 
-
-def news_list(request):
-    articles = Article.objects.order_by('-date_published')
-    return render(request, 'news_app/news_list.html', {'articles': articles})
-    
 
 class ArticleList(ListView):
     model = Article
     template_name = 'news_app/news_list.html'
     context_object_name = 'articles'
     ordering = ['-date_published']
-    paginate_by = 5
+    paginate_by = 3
 
     def get_context_data(self, **kwargs): 
         context = super().get_context_data(**kwargs)
         context['filter'] = ArticleFilter(self.request.GET, queryset=self.get_queryset())
+        category = self.request.GET.get('category', None)
+        if category:
+            context['is_category_match'] = True
+        else:
+            context['is_category_match'] = False
+        context['category_name'] = self.request.GET.get('category', None)
         return context
+    
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        category = self.request.GET.get('category', None)
+        if category:
+            queryset = queryset.filter(cat__name=category)
+        return queryset
 
 
 class ArticleDetail(DetailView):
@@ -44,6 +53,15 @@ class ArticleUpdate(LoginRequiredMixin, UpdateView):
     template_name = 'news_app/create.html'
     form_class = ArticleForm
     success_url = '/news/'
+    # subs = Article.cat.subscribers.all()
+    # for sub in subs:
+    #     send_mail(
+    #         'Новая статья в категории',  # Тема письма
+    #         'Добрый день, в категории "{}" добавлена новая статья "{}".'.format(sub, Article.title),  # Текст письма
+    #         'golubev5ergei@yandex.ru',  # Email-адрес отправителя
+    #         'golubevsv@gmail.com',  # Список email-адресов получателей
+    #         fail_silently=True,  # Режим отладки
+    #     )
 
 
 class ArticleDelete(LoginRequiredMixin, DeleteView):
@@ -70,19 +88,3 @@ def contacts(request):
 
 def reg(request):
     return render(request, 'protect/index.html')
-
-
-def create(request):
-    error = ''
-    if request.method == 'POST':
-        form = ArticleForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('news')
-        else: error = 'Ошибка заполнения формы'
-    form = ArticleForm()
-    data = {
-        'form': form,
-        'error': error 
-    }
-    return render(request, 'news_app/create.html', data)

@@ -11,8 +11,14 @@
         <p><i>Опубликовано: {{ article.date_published|date:"F j, Y, H:i" }}</i></p><br>
         {% if user.is_authenticated %}
           {% if is_author %}
-            <a href="{% url 'article-delete' article.id %}" class="btn btn-warning">Удалить</a><br>
-            <a href="{% url 'article-update' article.id %}" class="btn btn-info">Редактировать</a>
+          <div class="row">
+            <div class="col">
+              <a href="{% url 'article-delete' article.id %}" class="btn btn-warning">Удалить</a>
+            </div>
+            <div class="col">
+              <a href="{% url 'article-update' article.id %}" class="btn btn-info">Редактировать</a>
+            </div>
+          </div>
         {% else %}
           <button class="btn btn-info"><a href="sign/upgrade/">Стать автором!</a></button>
         {% endif %}

@@ -7,38 +7,69 @@
   <form method="GET">
     {{ filter.form }}
     <input type="submit" value="Найти">
-</form>
+  </form>
+<div class="news-block">
+  <div class="row">
     {% for article in articles %}
-        <h4>{{ article.title|censor }}</h4>
-        <p>Опубликовано {{ article.date_published|date:"F j, Y, H:i" }}</p>
-        <a href="/news/{{ article.id }}">{{ article.content|truncatechars:50|censor }}</a>
+    <div class="columns news-card">
+    <div class="col-12">
+      <div class="card h-100">
+        <div class="card-body">
+          <h4 class="card-title">{{ article.title|censor }}</h4>
+          <p class="card-text">{{ article.content|truncatechars:50|censor }}</p>
+        </div>
+        <div class="card-footer">
+          <a href="/news/{{ article.id }}" class="btn btn-primary">Читать далее</a>
+          <small class="text-muted">Опубликовано {{ article.date_published|date:"F j, Y, H:i" }}</small>
+          <span class="text-muted">Категория: {{ article.cat }}</span>
+        </div>
+      </div>
+    </div>
+    </div>
     {% empty %}
-      <p>Нет новых статей.</p>
+    <p>Нет новых статей.</p>
     {% endfor %}
-    {% if is_paginated %}
-    {% if page_obj.has_previous %}
-        <a href="?page=1">First</a>
-        <a href="?page={{ page_obj.previous_page_number }}"><<<</a>
-    {% endif %}
- 
-    <!-- Показываем только текущую страницу и ближайшие к ней, чтобы список не тянулся и не захламлял страницу -->
-    {% for num in page_obj.paginator.page_range %}
-        {% if page_obj.number == num %}
-            <a>{{ num }}</a>
-        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-            <a href="?page={{ num }}">{{ num }}</a>
-        {% endif %}
-    {% endfor %}
- 
-    <!-- Если есть следующая страница, то даём ссылку на неё и на самую последнюю страницу -->
-    {% if page_obj.has_next %}
-        <a href="?page={{ page_obj.next_page_number }}">>>></a>
-        <a href="?page={{ page_obj.paginator.num_pages }}">Last</a>
-    {% endif %}
- 
-{% endif %}
-
+  </div>
+  {% if is_paginated %}
+  <nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+      {% if page_obj.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="?page=1">Первая</a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Предыдущая</a>
+      </li>
+      {% endif %}
+      {% for num in page_obj.paginator.page_range %}
+      {% if page_obj.number == num %}
+      <li class="page-item active" aria-current="page">
+        <span class="page-link">{{ num }}</span>
+      </li>
+      {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+      </li>
+      {% endif %}
+      {% endfor %}
+      {% if page_obj.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.next_page_number }}">Следующая</a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Последняя</a>
+      </li>
+      {% endif %}
+    </ul>
+  </nav>
+</div>
+  {% endif %}
 {% endblock content %}
+
 {% block button %}
-    <a href="{% url 'create' %}"><button class="btn btn-info">Добавить новость</button></a>
+  <a href="{% url 'create' %}" class="btn btn-primary">Добавить новость</a>
+  <a {% if is_category_match %}href="{% url 'subscribe' category_name=category_name %}"{% endif %}>
+    <button class="btn btn-info" {% if not is_category_match %}style="display:none;"{% endif %}>Подписаться на раздел</button>
+</a>
+</a>
 {% endblock button %}
