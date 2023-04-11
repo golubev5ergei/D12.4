@@ -4,7 +4,6 @@ from .forms import ArticleForm
 from django.views.generic import DetailView, UpdateView, DeleteView, ListView, CreateView
 from .filters import ArticleFilter
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.mail import send_mail
 
 
 
@@ -53,15 +52,6 @@ class ArticleUpdate(LoginRequiredMixin, UpdateView):
     template_name = 'news_app/create.html'
     form_class = ArticleForm
     success_url = '/news/'
-    # subs = Article.cat.subscribers.all()
-    # for sub in subs:
-    #     send_mail(
-    #         'Новая статья в категории',  # Тема письма
-    #         'Добрый день, в категории "{}" добавлена новая статья "{}".'.format(sub, Article.title),  # Текст письма
-    #         'golubev5ergei@yandex.ru',  # Email-адрес отправителя
-    #         'golubevsv@gmail.com',  # Список email-адресов получателей
-    #         fail_silently=True,  # Режим отладки
-    #     )
 
 
 class ArticleDelete(LoginRequiredMixin, DeleteView):

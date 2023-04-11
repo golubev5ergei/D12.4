@@ -2,7 +2,7 @@ from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from news_app.models import Category
 from django.contrib.auth.models import Group
-from django.core.mail import send_mail
+
 
 @login_required
 def subscribe(request, category_name):
@@ -32,3 +32,4 @@ def sub_test(request, category_name):
     category.subscribers.add(user)
 
     return redirect ('news')
+
