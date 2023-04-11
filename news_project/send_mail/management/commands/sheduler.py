@@ -7,6 +7,7 @@ from apscheduler.triggers.cron import CronTrigger
 from django.core.management.base import BaseCommand
 from django_apscheduler.jobstores import DjangoJobStore
 from django_apscheduler.models import DjangoJobExecution
+# from send_mail.signals import notify_subscribers
 from news_app.tasks import article_add_sub
 from news_app.models import Article
 

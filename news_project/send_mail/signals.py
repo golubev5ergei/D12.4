@@ -6,7 +6,7 @@ from news_app.tasks import article_add_sub
 
 @receiver(post_save, sender=Article)
 def notify_subscribers(sender, instance, **kwargs):
-    print(kwargs)
-    if kwargs['created']:
+
+        # if kwargs['created']:
         article_add_sub(instance)
     
