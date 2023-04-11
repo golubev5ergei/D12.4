@@ -2,10 +2,7 @@ from datetime import datetime, timedelta
 from django.utils import timezone
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
-from news_app.models import Category, Article, User
-from django.db.models import Q
-
-
+from news_app.models import Category, Article
 
 
 def article_add_sub(instance):
