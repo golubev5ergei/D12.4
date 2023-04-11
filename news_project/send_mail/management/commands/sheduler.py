@@ -8,8 +8,8 @@ from django.core.management.base import BaseCommand
 from django_apscheduler.jobstores import DjangoJobStore
 from django_apscheduler.models import DjangoJobExecution
 # from send_mail.signals import notify_subscribers
-from news_app.tasks import article_add_sub
-from news_app.models import Article
+from news_app.tasks import check_new_articles_all_categories
+
 
 logger = logging.getLogger(__name__)
 
@@ -24,11 +24,11 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         scheduler = BlockingScheduler(timezone=settings.TIME_ZONE)
         scheduler.add_jobstore(DjangoJobStore(), "default")
-        article = Article.objects.get(id=Article.id)
+        # article = Article.objects.get(id=Article.id)
 
         scheduler.add_job(
-            article_add_sub,
-            args=[article],
+            check_new_articles_all_categories,
+            # args=[article],
             trigger=CronTrigger(second="*/5"),
             # trigger=CronTrigger(
             #     day_of_week="mon", hour="00", minute="00"
