@@ -167,13 +167,13 @@ ACCOUNT_FORMS = {'signup': 'sign.models.BasicSignupForm'}
 
 load_dotenv()
 
-EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_HOST = 'smtp.testmail.com'
 EMAIL_PORT = 465
 EMAIL_HOST_USER = os.getenv('mailuser')
 EMAIL_HOST_PASSWORD = os.getenv('mailpass')
 EMAIL_USE_SSL = True
 
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER + 'yandex.ru'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER + 'testmail.ru'
 
 APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
 APSCHEDULER_RUN_NOW_TIMEOUT = 25

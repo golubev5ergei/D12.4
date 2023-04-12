@@ -18,7 +18,7 @@ class Article(models.Model):
     date_published = models.DateTimeField(auto_now_add=True, verbose_name='Время публикации')
 
     def get_absolute_url(self):
-        return f'/news/{self.id}'
+        return f'/news/{self.id}/'
     
     def __str__(self):
         return self.title

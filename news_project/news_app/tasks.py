@@ -17,7 +17,7 @@ def article_add_sub(instance):
             template_name=template,
             context={
             'category': category,
-            'posts': text,
+            'post': text,
             },
         )
         msg = EmailMultiAlternatives(
@@ -38,7 +38,7 @@ def article_add_sub(instance):
 
 def check_new_articles(Category):
     now = datetime.now()
-    week_ago = now - timedelta(minutes=1)
+    week_ago = now - timedelta(weeks=1)
     new_articles = Article.objects.filter(category=Article.cat, created_at__gte=week_ago)
 
     return new_articles
