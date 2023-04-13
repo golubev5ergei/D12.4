@@ -180,3 +180,80 @@ APSCHEDULER_RUN_NOW_TIMEOUT = 25
 
 if DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+import logging
+from logging.handlers import TimedRotatingFileHandler, SMTPHandler
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+        'general_log': {
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'filename': 'general.log',
+            'when': 'midnight',
+            'interval': 1,
+            'level': 'INFO',
+            'formatter': 'verbose',
+        },
+        'errors_log': {
+            'class': 'logging.FileHandler',
+            'filename': 'errors.log',
+            'level': 'ERROR',
+            'formatter': 'simple',
+        },
+        'email': {
+            'class': 'logging.handlers.SMTPHandler',
+            'mailhost': 'smtp.gmail.com:587',
+            'fromaddr': 'your_email@gmail.com',
+            'toaddrs': 'recipient_email@gmail.com',
+            'subject': 'Error on Django Server',
+            'credentials': ('your_email@gmail.com', 'your_email_password'),
+            'secure': (None, None),
+            'timeout': 5.0,
+            'level': 'ERROR',
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'general_log', 'errors_log', 'email'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'news_app': {
+            'handlers': ['console', 'general_log', 'errors_log', 'email'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+    'filters': {
+        'debug_only': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+        'non_debug_only': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+        'errors_only': {
+            '()': 'django.utils.log.CallbackFilter',
+            'callback': lambda record: record.levelno >= logging.ERROR and ('django.request' in record.name or 'django.server' in record.name),
+        },
+        'security_only': {
+            '()': 'django.utils.log.CallbackFilter',
+            'callback': lambda record: 'django.security' in record.name,
+        },
+    },
+    'formatters': {
+        'verbose': {
+            'format': '{asctime} - {levelname} - {module} - {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{asctime} - {levelname} - {message}',
+            'style': '{',
+        },
+    },
+}

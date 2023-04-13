@@ -1,0 +1,8 @@
+2023-04-13 15:59:36,955 - INFO - autoreload - Watching for file changes with StatReloader
+2023-04-13 16:03:56,455 - INFO - basehttp - "GET / HTTP/1.1" 200 5958
+2023-04-13 16:03:56,536 - INFO - basehttp - "GET /static/css/style.css HTTP/1.1" 304 0
+2023-04-13 16:03:56,537 - INFO - basehttp - "GET /static/css/index.css HTTP/1.1" 304 0
+2023-04-13 16:03:56,538 - INFO - basehttp - "GET /static/js/scripts.js HTTP/1.1" 304 0
+2023-04-13 16:03:57,066 - WARNING - log - Not Found: /favicon.ico
+2023-04-13 16:03:57,067 - WARNING - basehttp - "GET /favicon.ico HTTP/1.1" 404 4403
+2023-04-13 16:04:00,348 - INFO - basehttp - "GET /news/77 HTTP/1.1" 200 5441
